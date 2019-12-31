@@ -48,3 +48,27 @@ Emojis:
    tableflip:
       identifier: ":tableflip:"
       emoji: "(╯°□°）╯︵ ┻━┻"
+   correct:
+      identifier: ":correct:"
+      emoji: "✔"
+   incorrect:
+      identifier: ":incorrect:"
+      emoji: "✖"
+   shrug:
+      identifier: ":shrug:"
+      emoji: "¯\_(ツ)_/¯"
+   cry:
+      identifier: ":cry:"
+      emoji: "ಥ_ಥ"
+   hug:
+      identifier: ":hug:"
+      emoji: "(づ￣ ³￣)づ"
+   kiss:
+      identifier: ":kiss:"
+      emoji: "( ˘ ³˘)♥ "
+   heart:
+      identifier: "<3"
+      emoji: "❤"
+   rage:
+      identifier: ":rage:"
+      emoji: "(ノಠ益ಠ)ノ彡┻━┻"

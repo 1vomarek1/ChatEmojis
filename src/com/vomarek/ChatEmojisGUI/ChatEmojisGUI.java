@@ -9,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.vomarek.ChatEmojisGUI.Commands.Commands;
 import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager;
-import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager.Emoji;
 import com.vomarek.ChatEmojisGUI.Events.Events;
 import com.vomarek.ChatEmojisGUI.Events.oldEvents;
 import com.vomarek.ChatEmojisGUI.Files.FileManager;
@@ -34,9 +33,6 @@ public class ChatEmojisGUI extends JavaPlugin {
 		Files = fileManager.loadFiles();
 		emojiManager = new EmojiManager();
 		
-		Emoji emoji = emojiManager.createEmoji("id", "identifier", "emoji");
-		System.out.print(emoji.getId());
-		
 		version = (Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].split("_")[1]));
 		
 		if (!setupTitle()) {
@@ -49,6 +45,7 @@ public class ChatEmojisGUI extends JavaPlugin {
 		} else {
 			getServer().getPluginManager().registerEvents(new Events(), this);
 		}
+		
 		
 		this.getCommand("emojis").setExecutor(new Commands());
 		getServer().getConsoleSender().sendMessage(ChatColor.DARK_AQUA+"["+ChatColor.DARK_GREEN+"ChatEmojisGUI"+ChatColor.DARK_AQUA+"]"+ChatColor.GREEN+" ChatEmojisGUI plugin has been enabled!");	

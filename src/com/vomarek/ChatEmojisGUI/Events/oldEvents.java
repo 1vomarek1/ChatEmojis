@@ -5,8 +5,10 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,7 +36,7 @@ public class oldEvents implements Listener{
 			if (!player.hasPermission("ChatEmojisGUI.emoji."+emoji.getId()) && !player.hasPermission("ChatEmojisGUI.emoji.*")) continue;
 			
 			PlayerSendEmojiEvent sendEvent = new PlayerSendEmojiEvent(player, emoji);
-			Bukkit.getPluginManager().callEvent(sendEvent);
+			Bukkit.getScheduler().runTask(ChatEmojisGUI.getPlugin(), () -> Bukkit.getPluginManager().callEvent(sendEvent));
 			if (!sendEvent.isCancelled()) {
 				message = message.replace(sendEvent.getEmoji().getIdentifier(), sendEvent.getEmoji().getEmoji());
 			}
@@ -42,6 +44,10 @@ public class oldEvents implements Listener{
 		}
 		
 		event.setMessage(message);
+	}
+	
+	public void callEvent(Event event) {
+		Bukkit.getScheduler().runTask(ChatEmojisGUI.getPlugin(), () -> Bukkit.getPluginManager().callEvent(event));
 	}
 	
 	@EventHandler
@@ -82,6 +88,20 @@ public class oldEvents implements Listener{
 				}.runTaskLater(ChatEmojisGUI.getPlugin(), 200L);
 			} else if (request.split(">><<").length >= 3) {
 				Emoji emoji = ChatEmojisGUI.getEmojiManager().createEmoji(request.split(">><<")[1], request.split(">><<")[2], event.getMessage());
+				EmojiGUI.open(player, emoji);
+			}
+		} else if (request.startsWith("edit")) {
+			if (request.split(">><<")[1].equals("id")) {
+				Emoji emoji = ChatEmojisGUI.getEmojiManager().getEmoji(request.split(">><<")[2]);
+				emoji.setId(event.getMessage());
+				EmojiGUI.open(player, emoji);
+			} else if (request.split(">><<")[1].equals("identifier")) {
+				Emoji emoji = ChatEmojisGUI.getEmojiManager().getEmoji(request.split(">><<")[2]);
+				emoji.setIdentifier(event.getMessage());
+				EmojiGUI.open(player, emoji);
+			} else if (request.split(">><<")[1].equals("emoji")) {
+				Emoji emoji = ChatEmojisGUI.getEmojiManager().getEmoji(request.split(">><<")[2]);
+				emoji.setEmoji(event.getMessage());
 				EmojiGUI.open(player, emoji);
 			}
 		}
@@ -159,6 +179,112 @@ public class oldEvents implements Listener{
 				
 				EmojiGUI.open(player, emoji);
 			}
+		} else if (event.getInventory().getName().startsWith("ChatEmojisGUI >> ")) {
+			String emojiid = event.getInventory().getName().split(" >> ")[1];
+			Emoji emoji = ChatEmojisGUI.getEmojiManager().getEmoji(emojiid);
+			if (emoji == null) {
+				new BukkitRunnable() {
+
+					@Override
+					public void run() {
+						MainGUI.open(player);
+					}
+					
+				}.runTaskLater(ChatEmojisGUI.getPlugin(), 1L);
+			}
+			event.setCancelled(true);
+			
+			
+			
+			if (event.getSlot() == 49) {
+				new BukkitRunnable() {
+
+					@Override
+					public void run() {
+						MainGUI.open(player);
+					}
+					
+				}.runTaskLater(ChatEmojisGUI.getPlugin(), 1L);
+			} else if (event.getSlot() == 15) {
+				if (event.getClick().equals(ClickType.DOUBLE_CLICK)) {
+					ChatEmojisGUI.getEmojiManager().deleteEmoji(emoji);
+					new BukkitRunnable() {
+
+						@Override
+						public void run() {
+							MainGUI.open(player);
+						}
+						
+					}.runTaskLater(ChatEmojisGUI.getPlugin(), 1L);
+				}
+			} else if (event.getSlot() == 29) {
+				RPlayer.put(player, "edit>><<id>><<"+emoji.getId());
+				
+				ChatEmojisGUI.sendTitle(player, ChatColor.AQUA+"Editing emoji", ChatColor.GRAY+"Please type its new Id", 0, 2100000000, 0);
+				
+				new BukkitRunnable () {
+
+					@Override
+					public void run() {
+						player.closeInventory();						
+					}
+					
+				}.runTaskLater(ChatEmojisGUI.getPlugin(), 1L);
+				
+				new BukkitRunnable() {
+					
+					@Override
+					public void run() {
+						if (!RPlayer.containsKey(player)) return;
+						ChatEmojisGUI.sendTitle(player, ChatColor.AQUA+"Editing emoji", ChatColor.GRAY+"Type "+ChatColor.RED+"cancel"+ChatColor.GRAY+" to cancel", 0, 2100000000, 0);
+					}
+				}.runTaskLater(ChatEmojisGUI.getPlugin(), 200L);
+			}else if (event.getSlot() == 31) {
+				RPlayer.put(player, "edit>><<identifier>><<"+emoji.getId());
+				
+				ChatEmojisGUI.sendTitle(player, ChatColor.AQUA+"Editing emoji", ChatColor.GRAY+"Please type its new Identifier", 0, 2100000000, 0);
+				
+				new BukkitRunnable () {
+
+					@Override
+					public void run() {
+						player.closeInventory();						
+					}
+					
+				}.runTaskLater(ChatEmojisGUI.getPlugin(), 1L);
+				
+				new BukkitRunnable() {
+					
+					@Override
+					public void run() {
+						if (!RPlayer.containsKey(player)) return;
+						ChatEmojisGUI.sendTitle(player, ChatColor.AQUA+"Editing emoji", ChatColor.GRAY+"Type "+ChatColor.RED+"cancel"+ChatColor.GRAY+" to cancel", 0, 2100000000, 0);
+					}
+				}.runTaskLater(ChatEmojisGUI.getPlugin(), 200L);
+			}else if (event.getSlot() == 33) {
+				RPlayer.put(player, "edit>><<emoji>><<"+emoji.getId());
+				
+				ChatEmojisGUI.sendTitle(player, ChatColor.AQUA+"Editing emoji", ChatColor.GRAY+"Please type new Emoji", 0, 2100000000, 0);
+				
+				new BukkitRunnable () {
+
+					@Override
+					public void run() {
+						player.closeInventory();						
+					}
+					
+				}.runTaskLater(ChatEmojisGUI.getPlugin(), 1L);
+				
+				new BukkitRunnable() {
+					
+					@Override
+					public void run() {
+						if (!RPlayer.containsKey(player)) return;
+						ChatEmojisGUI.sendTitle(player, ChatColor.AQUA+"Editing emoji", ChatColor.GRAY+"Type "+ChatColor.RED+"cancel"+ChatColor.GRAY+" to cancel", 0, 2100000000, 0);
+					}
+				}.runTaskLater(ChatEmojisGUI.getPlugin(), 200L);
+			}
+			
 		}
 		
 	}

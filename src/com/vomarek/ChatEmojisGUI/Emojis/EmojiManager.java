@@ -13,6 +13,13 @@ public class EmojiManager {
 		}
 	}
 	
+	public void reloadEmojis() {
+		emojis = new HashMap<String, Emoji>();
+		for (String id : ChatEmojisGUI.getFiles().get("config").get().getConfigurationSection("Emojis").getKeys(false)) {
+			emojis.put(id, new Emoji(id));
+		}
+	}
+	
 	public Emoji getEmoji(String id) {
 		if (emojis.containsKey(id)) {
 			return (emojis.get(id));
@@ -34,6 +41,13 @@ public class EmojiManager {
 		Emoji emojiObject = new Emoji(id);
 		emojis.put(id, emojiObject);
 		return emojiObject;
+	}
+	
+	public void deleteEmoji(Emoji emoji) {
+		ChatEmojisGUI.getFiles().get("config").set("Emojis."+emoji.id,null);
+		ChatEmojisGUI.getFiles().get("config").save();
+		emojis.remove(emoji.getId());
+		emoji = null;
 	}
     
 	public class Emoji {
@@ -69,18 +83,19 @@ public class EmojiManager {
 			this.identifier = identifier;
 		}
 		
+		public void setId(String id) {
+			ChatEmojisGUI.getFiles().get("config").set("Emojis."+id+".identifier",this.identifier);
+			ChatEmojisGUI.getFiles().get("config").set("Emojis."+id+".emoji",this.emoji);
+			ChatEmojisGUI.getFiles().get("config").set("Emojis."+this.id,null);
+			ChatEmojisGUI.getFiles().get("config").save();
+			this.id = id;
+			ChatEmojisGUI.getEmojiManager().reloadEmojis();
+		}
+		
 		public void setEmoji(String emoji) {
 			ChatEmojisGUI.getFiles().get("config").set("Emojis."+this.id+".emoji",emoji);
 			ChatEmojisGUI.getFiles().get("config").save();
 			this.emoji = emoji;
-		}
-		
-		public void deleteEmoji() {
-			ChatEmojisGUI.getFiles().get("config").set("Emojis."+this.id,null);
-			ChatEmojisGUI.getFiles().get("config").save();
-			this.emoji = null;
-			this.id = null;
-			this.identifier = null;
 		}
 		
 	}

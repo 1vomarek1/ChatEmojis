@@ -44,6 +44,7 @@ public class Commands implements CommandExecutor {
 			@Override
 			public void run() {
 				ChatEmojisGUI.getFiles().get("config").reload();
+				ChatEmojisGUI.getEmojiManager().reloadEmojis();
 			}
 			
 		};
