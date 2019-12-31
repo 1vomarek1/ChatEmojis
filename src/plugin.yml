@@ -1,8 +1,27 @@
 name: ChatEmojisGUI
 description: Ultimate emojis plugin
-version: 0.1 [BETA]
+version: 1.0.0
 main: com.vomarek.ChatEmojisGUI.ChatEmojisGUI
+website: vomarek.com
 commands:
-   emojis:
+   chatemojisgui:
       description: Command to open Emojis menu
-      
+      aliases: [emojis, chatemojis]
+      usage: "Usage: /<command>"
+permissions:
+   ChatEmojisGUI.admin:
+      description: Administrator permissions for ChatEmojisGUI
+      default: op
+      children:
+         ChatEmojisGUI.reload: true
+         ChatEmojisGUI.manage: true
+         ChatEmojisGUI.emoji.*: true
+   ChatEmojisGUI.manage:
+      description: Permission to manage emojis
+      default: op
+   ChatEmojisGUI.reload:
+      description: Permission to reload ChatEmojisGUI
+      default: op
+   ChatEmojisGUI.emoji.*:
+      description: Permission to use all emojis
+      default: op

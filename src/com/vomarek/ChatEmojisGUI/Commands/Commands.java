@@ -16,26 +16,36 @@ public class Commands implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if (cmd.getName().equalsIgnoreCase("emojis")) {
+		if (cmd.getName().equalsIgnoreCase("chatemojisgui")) {
 			
 			if (args.length < 1) {
 				if (sender instanceof Player) {
-					if (sender.hasPermission("ChatEmojisGUI.admin")) {
+					if (sender.hasPermission("ChatEmojisGUI.manage")) {
 						Player player = (Player) sender;
 						MainGUI.open(player);
+					} else {
+						sender.sendMessage(ChatColor.RED+""+ChatColor.BOLD+"Hey! "+ChatColor.GRAY+"You can't use this command!");
 					}
+				} else {
+					sender.sendMessage(ChatColor.RED+""+ChatColor.BOLD+"Hey! "+ChatColor.GRAY+"Only players can use this command!");
 				}
 			} else if (args[0].equalsIgnoreCase("reload")) {
+				if (sender.hasPermission("ChatEmojisGUI.reload")) {
 				Date now = new Date();
 				Date executed = reloadConfig();
 				Long time = executed.getTime() - now.getTime();
 				sender.sendMessage(ChatColor.GREEN+"Config reloaded in "+time+"ms!");
+				} else {
+					sender.sendMessage(ChatColor.RED+""+ChatColor.BOLD+"Hey! "+ChatColor.GRAY+"You can't use this command!");
+				}
+			} else {
+				return false;
 			}
 			
-			
+			return true;
 		}
 		
-		return true;
+		return false;
 	}
 	
 	public Date reloadConfig(){

@@ -47,7 +47,7 @@ public class ChatEmojisGUI extends JavaPlugin {
 		}
 		
 		
-		this.getCommand("emojis").setExecutor(new Commands());
+		this.getCommand("chatemojisgui").setExecutor(new Commands());
 		getServer().getConsoleSender().sendMessage(ChatColor.DARK_AQUA+"["+ChatColor.DARK_GREEN+"ChatEmojisGUI"+ChatColor.DARK_AQUA+"]"+ChatColor.GREEN+" ChatEmojisGUI plugin has been enabled!");	
 	}
 	
