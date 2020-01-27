@@ -13,8 +13,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.vomarek.ChatEmojisGUI.ChatEmojisGUI;
+import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager;
 import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager.Emoji;
 import com.vomarek.ChatEmojisGUI.Files.FileManager.Config;
+import com.vomarek.ChatEmojisGUI.util.Replacements;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -31,14 +33,14 @@ public class MainGUI {
 		int i = 0;
 		int pos = 10;
 		for (String s : config.get().getConfigurationSection("Emojis").getKeys(false)) {
-			Emoji emoji = ChatEmojisGUI.getEmojiManager().getEmoji(s);
+			Emoji emoji = EmojiManager.getEmoji(s);
 			
 			if (pos == 17) pos += 2;
 			if (pos == 26) pos += 2;
 			if (pos == 35) pos += 2;
 			
 			if (i >= (28 * pg.get(player)) && i < (28 * (pg.get(player) +1))) {
-				inv.setItem(pos, createGUIItem(ChatColor.GREEN+""+emoji.getId(), new ArrayList<String>(Arrays.asList(ChatColor.GRAY+emoji.getIdentifier(),ChatColor.GRAY+emoji.getEmoji(),ChatColor.GREEN+"Click "+ChatColor.GRAY+"to manage emoji")), Material.EMPTY_MAP, 1));
+				inv.setItem(pos, createGUIItem(ChatColor.GREEN+""+emoji.getId(), new ArrayList<String>(Arrays.asList(ChatColor.GRAY+emoji.getIdentifier(),ChatColor.GRAY+Replacements.replace(emoji.getEmoji(), player),ChatColor.GREEN+"Click "+ChatColor.GRAY+"to manage emoji")), Material.EMPTY_MAP, 1));
 				pos++;
 			}
 			i++;

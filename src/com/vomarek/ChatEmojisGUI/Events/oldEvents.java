@@ -11,12 +11,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.vomarek.ChatEmojisGUI.ChatEmojisGUI;
+import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager;
 import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager.Emoji;
 import com.vomarek.ChatEmojisGUI.GUI.EmojiGUI;
 import com.vomarek.ChatEmojisGUI.GUI.MainGUI;
+import com.vomarek.ChatEmojisGUI.util.Replacements;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -27,7 +30,7 @@ public class oldEvents implements Listener{
 	public void chatEvent(AsyncPlayerChatEvent event) {
 		String message = event.getMessage();
 		Player player = event.getPlayer();
-		for(Map.Entry<String, Emoji> entry : ChatEmojisGUI.getEmojiManager().getEmojis().entrySet()) {
+		for(Map.Entry<String, Emoji> entry : EmojiManager.getEmojis().entrySet()) {
 			Emoji emoji = entry.getValue();
 			
 			if (!message.contains(emoji.getIdentifier())) continue;
@@ -38,7 +41,30 @@ public class oldEvents implements Listener{
 			PlayerSendEmojiEvent sendEvent = new PlayerSendEmojiEvent(player, emoji);
 			Bukkit.getScheduler().runTask(ChatEmojisGUI.getPlugin(), () -> Bukkit.getPluginManager().callEvent(sendEvent));
 			if (!sendEvent.isCancelled()) {
-				message = message.replace(sendEvent.getEmoji().getIdentifier(), sendEvent.getEmoji().getEmoji());
+				message = message.replace(sendEvent.getEmoji().getIdentifier(), Replacements.replace(sendEvent.getEmoji().getEmoji(), player));
+			}
+			
+		}
+		
+		event.setMessage(message);
+	}
+	
+	@EventHandler
+	public void onCommand(PlayerCommandPreprocessEvent event) {
+		String message = event.getMessage();
+		Player player = event.getPlayer();
+		for(Map.Entry<String, Emoji> entry : EmojiManager.getEmojis().entrySet()) {
+			Emoji emoji = entry.getValue();
+			
+			if (!message.contains(emoji.getIdentifier())) continue;
+			
+			
+			if (!player.hasPermission("ChatEmojisGUI.emoji."+emoji.getId()) && !player.hasPermission("ChatEmojisGUI.emoji.*")) continue;
+			
+			PlayerSendEmojiEvent sendEvent = new PlayerSendEmojiEvent(player, emoji);
+			Bukkit.getScheduler().runTask(ChatEmojisGUI.getPlugin(), () -> Bukkit.getPluginManager().callEvent(sendEvent));
+			if (!sendEvent.isCancelled()) {
+				message = message.replace(sendEvent.getEmoji().getIdentifier(), Replacements.replace(sendEvent.getEmoji().getEmoji(), player));
 			}
 			
 		}
@@ -87,20 +113,20 @@ public class oldEvents implements Listener{
 					}
 				}.runTaskLater(ChatEmojisGUI.getPlugin(), 200L);
 			} else if (request.split(">><<").length >= 3) {
-				Emoji emoji = ChatEmojisGUI.getEmojiManager().createEmoji(request.split(">><<")[1], request.split(">><<")[2], event.getMessage());
+				Emoji emoji = EmojiManager.createEmoji(request.split(">><<")[1], request.split(">><<")[2], event.getMessage());
 				EmojiGUI.open(player, emoji);
 			}
 		} else if (request.startsWith("edit")) {
 			if (request.split(">><<")[1].equals("id")) {
-				Emoji emoji = ChatEmojisGUI.getEmojiManager().getEmoji(request.split(">><<")[2]);
+				Emoji emoji = EmojiManager.getEmoji(request.split(">><<")[2]);
 				emoji.setId(event.getMessage());
 				EmojiGUI.open(player, emoji);
 			} else if (request.split(">><<")[1].equals("identifier")) {
-				Emoji emoji = ChatEmojisGUI.getEmojiManager().getEmoji(request.split(">><<")[2]);
+				Emoji emoji = EmojiManager.getEmoji(request.split(">><<")[2]);
 				emoji.setIdentifier(event.getMessage());
 				EmojiGUI.open(player, emoji);
 			} else if (request.split(">><<")[1].equals("emoji")) {
-				Emoji emoji = ChatEmojisGUI.getEmojiManager().getEmoji(request.split(">><<")[2]);
+				Emoji emoji = EmojiManager.getEmoji(request.split(">><<")[2]);
 				emoji.setEmoji(event.getMessage());
 				EmojiGUI.open(player, emoji);
 			}
@@ -173,7 +199,7 @@ public class oldEvents implements Listener{
 				if (event.getInventory().getItem(event.getSlot()) == null) return;
 				
 				String emojiid = event.getInventory().getItem(event.getSlot()).getItemMeta().getDisplayName().replace("§a", "");
-				Emoji emoji = ChatEmojisGUI.getEmojiManager().getEmoji(emojiid);
+				Emoji emoji = EmojiManager.getEmoji(emojiid);
 				
 				if (emoji == null) return;
 				
@@ -181,7 +207,7 @@ public class oldEvents implements Listener{
 			}
 		} else if (event.getInventory().getName().startsWith("ChatEmojisGUI >> ")) {
 			String emojiid = event.getInventory().getName().split(" >> ")[1];
-			Emoji emoji = ChatEmojisGUI.getEmojiManager().getEmoji(emojiid);
+			Emoji emoji = EmojiManager.getEmoji(emojiid);
 			if (emoji == null) {
 				new BukkitRunnable() {
 
@@ -207,7 +233,7 @@ public class oldEvents implements Listener{
 				}.runTaskLater(ChatEmojisGUI.getPlugin(), 1L);
 			} else if (event.getSlot() == 15) {
 				if (event.getClick().equals(ClickType.DOUBLE_CLICK)) {
-					ChatEmojisGUI.getEmojiManager().deleteEmoji(emoji);
+					EmojiManager.deleteEmoji(emoji);
 					new BukkitRunnable() {
 
 						@Override

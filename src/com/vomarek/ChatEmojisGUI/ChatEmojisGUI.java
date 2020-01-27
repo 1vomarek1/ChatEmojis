@@ -16,14 +16,15 @@ import com.vomarek.ChatEmojisGUI.Files.FileManager.Config;
 import com.vomarek.ChatEmojisGUI.Title.Title;
 import com.vomarek.ChatEmojisGUI.Title.Title_1_8_R1;
 import com.vomarek.ChatEmojisGUI.Title.Title_1_8_R2;
+import com.vomarek.ChatEmojisGUI.Title.Title_1_8_R3;
 import com.vomarek.ChatEmojisGUI.Title.Title_1_9;
 
 public class ChatEmojisGUI extends JavaPlugin {
 	private static ChatEmojisGUI plugin;
 	private static FileManager fileManager;
 	private static HashMap<String, Config> Files;
-	private static EmojiManager emojiManager;
 	public static Integer version;
+	private static HashMap<String, Boolean> hooks = new HashMap<String, Boolean>();
 	
 	private static Title title;
 	
@@ -31,9 +32,17 @@ public class ChatEmojisGUI extends JavaPlugin {
 		plugin = this;
 		fileManager = new FileManager();
 		Files = fileManager.loadFiles();
-		emojiManager = new EmojiManager();
+		new EmojiManager();
 		
 		version = (Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].split("_")[1]));
+		
+		if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+			getServer().getConsoleSender().sendMessage(ChatColor.DARK_AQUA+"["+ChatColor.DARK_GREEN+"ChatEmojisGUI"+ChatColor.DARK_AQUA+"]"+ChatColor.GREEN+" PlaceholderAPI detected! You'll be able to use placeholders!");	
+			hooks.put("PlaceholderAPI", true);
+		} else {
+			getServer().getConsoleSender().sendMessage(ChatColor.DARK_AQUA+"["+ChatColor.DARK_GREEN+"ChatEmojisGUI"+ChatColor.DARK_AQUA+"]"+ChatColor.RED+" PlaceholderAPI not detected! If you want to use placeholders consider downloading PlaceholderAPI https://www.spigotmc.org/resources/placeholderapi.6245/");	
+			hooks.put("PlaceholderAPI", false);
+		}
 		
 		if (!setupTitle()) {
 			this.setEnabled(false);
@@ -68,10 +77,6 @@ public class ChatEmojisGUI extends JavaPlugin {
 		return fileManager;
 	}
 	
-	public static EmojiManager getEmojiManager() {
-		return emojiManager;
-	}
-	
 	public static void sendTitle(Player player, String Title, String subtitle, Integer fadeIn, Integer stay, Integer fadeOut) {
 		title.sendTitle(player, Title, subtitle, fadeIn, stay, fadeOut);
 	}
@@ -90,10 +95,16 @@ public class ChatEmojisGUI extends JavaPlugin {
 			title = new Title_1_8_R1();
 		} else if (version.contentEquals("v1_8_R2")) {
 			title = new Title_1_8_R2();
+		} else if (version.contentEquals("v1_8_R3")) {
+			title = new Title_1_8_R3();
 		} else {
 			title = new Title_1_9();
 		}
 		
 		return title != null;
+	}
+	
+	public static HashMap<String, Boolean> getHooks() {
+		return hooks;
 	}
 }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.vomarek.ChatEmojisGUI.ChatEmojisGUI;
 
 public class EmojiManager {
-    private HashMap<String, Emoji> emojis = new HashMap<String, Emoji>();
+    private static HashMap<String, Emoji> emojis = new HashMap<String, Emoji>();
 	
 	public EmojiManager() {
 		for (String id : ChatEmojisGUI.getFiles().get("config").get().getConfigurationSection("Emojis").getKeys(false)) {
@@ -13,14 +13,14 @@ public class EmojiManager {
 		}
 	}
 	
-	public void reloadEmojis() {
+	public static void reloadEmojis() {
 		emojis = new HashMap<String, Emoji>();
 		for (String id : ChatEmojisGUI.getFiles().get("config").get().getConfigurationSection("Emojis").getKeys(false)) {
 			emojis.put(id, new Emoji(id));
 		}
 	}
 	
-	public Emoji getEmoji(String id) {
+	public static Emoji getEmoji(String id) {
 		if (emojis.containsKey(id)) {
 			return (emojis.get(id));
 		} else {
@@ -28,11 +28,11 @@ public class EmojiManager {
 		}
 	}
 	
-	public HashMap<String, Emoji> getEmojis() {
+	public static HashMap<String, Emoji> getEmojis() {
 		return emojis;
 	}
 	
-	public Emoji createEmoji(String id, String identifier, String emoji) {
+	public static Emoji createEmoji(String id, String identifier, String emoji) {
 		ChatEmojisGUI.getFiles().get("config").set("Emojis."+id+".identifier", identifier);
 		ChatEmojisGUI.getFiles().get("config").set("Emojis."+id+".emoji", emoji);
 		ChatEmojisGUI.getFiles().get("config").save();
@@ -43,14 +43,14 @@ public class EmojiManager {
 		return emojiObject;
 	}
 	
-	public void deleteEmoji(Emoji emoji) {
+	public static void deleteEmoji(Emoji emoji) {
 		ChatEmojisGUI.getFiles().get("config").set("Emojis."+emoji.id,null);
 		ChatEmojisGUI.getFiles().get("config").save();
 		emojis.remove(emoji.getId());
 		emoji = null;
 	}
     
-	public class Emoji {
+	public static class Emoji {
 		String id;
 		String identifier;
 		String emoji;
@@ -89,7 +89,7 @@ public class EmojiManager {
 			ChatEmojisGUI.getFiles().get("config").set("Emojis."+this.id,null);
 			ChatEmojisGUI.getFiles().get("config").save();
 			this.id = id;
-			ChatEmojisGUI.getEmojiManager().reloadEmojis();
+			EmojiManager.reloadEmojis();
 		}
 		
 		public void setEmoji(String emoji) {

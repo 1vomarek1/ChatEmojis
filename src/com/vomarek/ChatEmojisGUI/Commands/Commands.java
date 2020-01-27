@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.vomarek.ChatEmojisGUI.ChatEmojisGUI;
+import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager;
 import com.vomarek.ChatEmojisGUI.GUI.MainGUI;
 
 public class Commands implements CommandExecutor {
@@ -54,7 +55,7 @@ public class Commands implements CommandExecutor {
 			@Override
 			public void run() {
 				ChatEmojisGUI.getFiles().get("config").reload();
-				ChatEmojisGUI.getEmojiManager().reloadEmojis();
+				EmojiManager.reloadEmojis();
 			}
 			
 		};

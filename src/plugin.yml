@@ -1,8 +1,9 @@
 name: ChatEmojisGUI
 description: Ultimate emojis plugin
-version: 1.0.0
+version: 1.0.1
 main: com.vomarek.ChatEmojisGUI.ChatEmojisGUI
 website: vomarek.com
+softdepend: [PlaceholderAPI]
 commands:
    chatemojisgui:
       description: Command to open Emojis menu

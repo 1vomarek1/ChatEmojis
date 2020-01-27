@@ -47,28 +47,28 @@
 Emojis:
    tableflip:
       identifier: ":tableflip:"
-      emoji: "(╯°□°）╯︵ ┻━┻"
+      emoji: "&4(╯°□°）&f╯︵ ┻━┻&r"
    correct:
       identifier: ":correct:"
-      emoji: "✔"
+      emoji: "&a✔&r"
    incorrect:
       identifier: ":incorrect:"
-      emoji: "✖"
+      emoji: "&c✖&r"
    shrug:
       identifier: ":shrug:"
-      emoji: "¯\_(ツ)_/¯"
+      emoji: "&e¯\_(ツ)_/¯&r"
    cry:
       identifier: ":cry:"
       emoji: "ಥ_ಥ"
    hug:
       identifier: ":hug:"
-      emoji: "(づ￣ ³￣)づ"
+      emoji: "&f(づ￣ ³￣)づ&f"
    kiss:
       identifier: ":kiss:"
-      emoji: "( ˘ ³˘)♥ "
+      emoji: "&f( ˘ ³˘)♥ &r"
    heart:
       identifier: "<3"
-      emoji: "❤"
+      emoji: "&c❤&r"
    rage:
       identifier: ":rage:"
-      emoji: "(ノಠ益ಠ)ノ彡┻━┻"
+      emoji: "&4(ノಠ益ಠ)&fノ彡┻━┻&r"
