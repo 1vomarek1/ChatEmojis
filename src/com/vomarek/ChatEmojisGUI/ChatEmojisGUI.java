@@ -19,15 +19,23 @@ import com.vomarek.ChatEmojisGUI.Title.Title_1_8_R2;
 import com.vomarek.ChatEmojisGUI.Title.Title_1_8_R3;
 import com.vomarek.ChatEmojisGUI.Title.Title_1_9;
 
+/** 
+* Main class of ChatEmojisGUI. 
+* 
+* @author 1vomarek1
+*/
 public class ChatEmojisGUI extends JavaPlugin {
 	private static ChatEmojisGUI plugin;
 	private static FileManager fileManager;
 	private static HashMap<String, Config> Files;
-	public static Integer version;
+	private static Integer version;
 	private static HashMap<String, Boolean> hooks = new HashMap<String, Boolean>();
 	
 	private static Title title;
 	
+	/**
+	 *  Method inherited by JavaPlugin
+	 */	
 	public void onEnable () {
 		plugin = this;
 		fileManager = new FileManager();
@@ -60,15 +68,28 @@ public class ChatEmojisGUI extends JavaPlugin {
 		getServer().getConsoleSender().sendMessage(ChatColor.DARK_AQUA+"["+ChatColor.DARK_GREEN+"ChatEmojisGUI"+ChatColor.DARK_AQUA+"]"+ChatColor.GREEN+" ChatEmojisGUI plugin has been enabled!");	
 	}
 	
+	/**
+	 *  Method inherited by JavaPlugin
+	 */	
 	public void onDisable () {
 		getServer().getConsoleSender().sendMessage(ChatColor.DARK_AQUA+"["+ChatColor.DARK_GREEN+"ChatEmojisGUI"+ChatColor.DARK_AQUA+"]"+ChatColor.RED+" ChatEmojisGUI plugin has been enabled!");
 
 	}
 	
+	/**
+	 * Get list of files ChatEmojisGUI store data in
+	 * 
+	 * @return list of files ChatEmojisGUI store data in
+	 */
 	public static HashMap<String, Config> getFiles() {
 		return Files;
 	}
 	
+	/**
+	 * Get instance of ChatEmojisGUI
+	 * 
+	 * @return instance of ChatEmojisGUI
+	 */
 	public static ChatEmojisGUI getPlugin() {
 		return plugin;
 	}
@@ -76,6 +97,17 @@ public class ChatEmojisGUI extends JavaPlugin {
 	public static FileManager getFileManager() {
 		return fileManager;
 	}
+	
+	/**
+	 * A method used to send titles (works on 1.8_R1,R2,R3 and any 1.9+ version)
+	 * 
+	 * @param player player that you want to send the title to
+	 * @param Title Text you want to have in title you are sending 
+	 * @param subtitle Text you want to have as subtitle
+	 * @param fadeIn Length of fade in of the title and subtitle
+	 * @param stay Time how long the title and subtitle should stay on the screen
+	 * @param fadeOut Length of fade out of the title and subtitle
+	 */ 
 	
 	public static void sendTitle(Player player, String Title, String subtitle, Integer fadeIn, Integer stay, Integer fadeOut) {
 		title.sendTitle(player, Title, subtitle, fadeIn, stay, fadeOut);
@@ -104,6 +136,11 @@ public class ChatEmojisGUI extends JavaPlugin {
 		return title != null;
 	}
 	
+	/**
+	 * Gets HashMap of plugins that ChatEmojisGUI are using
+	 * 
+	 *  @return HashMap of plugins that ChatEmojisGUI are using
+	 */
 	public static HashMap<String, Boolean> getHooks() {
 		return hooks;
 	}
