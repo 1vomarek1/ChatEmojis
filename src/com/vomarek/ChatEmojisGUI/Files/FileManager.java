@@ -101,8 +101,12 @@ public class FileManager {
   public HashMap<String, Config> loadFiles() {
     HashMap<String, Config> map = new HashMap<>();
     Config config = getConfig("config.yml");
-    if (config.get().getConfigurationSection("Emojis").getKeys(false).isEmpty())
-      config.saveDefaultConfig(); 
+    
+    if (config.get().getConfigurationSection("").getKeys(true).isEmpty()) { 
+  	  config.copyDefaults(true);
+  	  config.reload();
+    }
+    
     map.put("config", config);
     return map;
   }

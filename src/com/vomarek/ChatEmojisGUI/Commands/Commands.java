@@ -1,10 +1,7 @@
 package com.vomarek.ChatEmojisGUI.Commands;
 
-import com.vomarek.ChatEmojisGUI.ChatEmojisGUI;
-import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager;
-import com.vomarek.ChatEmojisGUI.Files.FileManager;
-import com.vomarek.ChatEmojisGUI.GUI.MainGUI;
 import java.util.Date;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,6 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import com.vomarek.ChatEmojisGUI.ChatEmojisGUI;
+import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager;
+import com.vomarek.ChatEmojisGUI.Files.FileManager.Config;
+import com.vomarek.ChatEmojisGUI.GUI.MainGUI;
 
 public class Commands implements CommandExecutor {
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -51,7 +53,13 @@ public class Commands implements CommandExecutor {
   public Date reloadConfig() {
     Runnable runnable = new Runnable() {
         public void run() {
-          ((FileManager.Config)ChatEmojisGUI.getFiles().get("config")).reload();
+          Config config = ChatEmojisGUI.getFiles().get("config");
+          config.reload();
+          
+          if (config.get().getConfigurationSection("").getKeys(true).isEmpty()) { 
+        	  config.copyDefaults(true);
+        	  config.reload();
+          }
           EmojiManager.reloadEmojis();
         }
       };
