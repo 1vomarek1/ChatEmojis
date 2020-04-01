@@ -5,6 +5,10 @@ import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager;
 import com.vomarek.ChatEmojisGUI.Emojis.EmojiManager.Emoji;
 import com.vomarek.ChatEmojisGUI.GUI.EmojiGUI;
 import com.vomarek.ChatEmojisGUI.GUI.MainGUI;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import com.vomarek.ChatEmojisGUI.util.Replacements;
@@ -25,7 +29,6 @@ public class EventsClass implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     public void emoji(AsyncPlayerChatEvent event) {
-        event.setMessage(" "+event.getMessage());
 
 
         String message = event.getMessage();
@@ -42,26 +45,21 @@ public class EventsClass implements Listener {
 
             if (event.isCancelled()) continue;
 
-            String restOfMessage = event.getMessage();
-            message = "";
-            for (String s : restOfMessage.split(emoji.getIdentifier())) {
-                if (!s.endsWith("\\")) {
-                    message = message + s + Replacements.replace(emoji.getEmoji(), player);
-                } else {
-                    message = message + s.substring(0, s.length() - 1) + emoji.getIdentifier();
-                }
-            }
+            message =message.replaceAll("[\\\\]"+emoji.getIdentifier(), "%%DONOTREPLACE%%");
+
+            message = message.replaceAll(emoji.getIdentifier(), Replacements.replace(emoji.getEmoji(), player));
+
+            message =message.replaceAll("%%DONOTREPLACE%%", emoji.getIdentifier());
+
 
             event.setMessage(message);
         }
 
-        event.setMessage(event.getMessage().substring(1));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     public void command(PlayerCommandPreprocessEvent event) {
 
-
         String message = event.getMessage();
         final Player player = event.getPlayer();
 
@@ -76,15 +74,12 @@ public class EventsClass implements Listener {
 
             if (event.isCancelled()) continue;
 
-            String restOfMessage = event.getMessage();
-            message = "";
-            for (String s : restOfMessage.split(emoji.getIdentifier())) {
-                if (!s.endsWith("\\")) {
-                    message = message + s + Replacements.replace(emoji.getEmoji(), player);
-                } else {
-                    message = message + s.substring(0, s.length() - 1) + emoji.getIdentifier();
-                }
-            }
+            message =message.replaceAll("[\\\\]"+emoji.getIdentifier(), "%%DONOTREPLACE%%");
+
+            message = message.replaceAll(emoji.getIdentifier(), Replacements.replace(emoji.getEmoji(), player));
+
+            message =message.replaceAll("%%DONOTREPLACE%%", emoji.getIdentifier());
+
 
             event.setMessage(message);
         }
