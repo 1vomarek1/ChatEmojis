@@ -1,29 +1,26 @@
-name: ChatEmojisGUI
+name: ChatEmojis
 version: ${project.version}
-main: com.vomarek.ChatEmojisGUI.ChatEmojisGUI
-api-version: 1.12
+main: com.vomarek.ChatEmojis
 softdepend: [PlaceholderAPI]
 authors: [1vomarek1]
 website: vomarek.com
 commands:
-  chatemojisgui:
-    description: Command to open Emojis menu
-    aliases: [emojis, chatemojis]
-    usage: "Usage: /<command>"
+  chatemojis:
+    description: Command to reload Emojis menu
+    usage: "Usage: /<command> reload"
 permissions:
-  ChatEmojisGUI.admin:
-    description: Administrator permissions for ChatEmojisGUI
+  chatemojis.admin:
+    description: Administrator permissions for ChatEmojis
     default: op
     children:
-      ChatEmojisGUI.reload: true
-      ChatEmojisGUI.manage: true
-      ChatEmojisGUI.emoji.*: true
-  ChatEmojisGUI.manage:
+      chatemojis.reload: true
+      chatemojis.emoji.*: true
+  chatemojis.manage:
     description: Permission to manage emojis
     default: op
-  ChatEmojisGUI.reload:
-    description: Permission to reload ChatEmojisGUI
+  chatemojis.reload:
+    description: Permission to reload ChatEmojis
     default: op
-  ChatEmojisGUI.emoji.*:
+  chatemojis.emoji.*:
     description: Permission to use all emojis
     default: op
