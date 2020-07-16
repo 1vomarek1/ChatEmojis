@@ -14,13 +14,17 @@ public class PlayerSendEmojiEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    public PlayerSendEmojiEvent(@NotNull final Player player, @NotNull final EmojiManager.Emoji emoji) {
+    public PlayerSendEmojiEvent(final Player player, final EmojiManager.Emoji emoji) {
         super(true);
         this.player = player;
         this.emoji = emoji;
         this.cancelled = false;
     }
 
+    /**
+     * Return the emoji involved in this event
+     * @return Emoji which is involved in this event
+     */
     @NotNull
     public EmojiManager.Emoji getEmoji () {
         return emoji;
@@ -45,11 +49,23 @@ public class PlayerSendEmojiEvent extends Event implements Cancellable {
         return HANDLER_LIST;
     }
 
+    /**
+     * Gets the cancellation state of this event. A cancelled event will not
+     * be executed in the server, but will still pass to other plugins
+     *
+     * @return true if this event is cancelled
+     */
     @Override
     public boolean isCancelled() {
         return cancelled;
     }
 
+    /**
+     * Sets the cancellation state of this event. A cancelled event will not
+     * be executed in the server, but will still pass to other plugins.
+     *
+     * @param cancel true if you wish to cancel this event
+     */
     @Override
     public void setCancelled(boolean cancel) {
         cancelled = cancel;

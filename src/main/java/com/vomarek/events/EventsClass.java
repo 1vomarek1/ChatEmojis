@@ -9,7 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.jetbrains.annotations.NotNull;
 
 public class EventsClass implements Listener {
     public ChatEmojis plugin;
@@ -49,7 +48,7 @@ public class EventsClass implements Listener {
     }
 
     @EventHandler (priority = EventPriority.LOW)
-    public void onEmojiSend(@NotNull final PlayerSendEmojiEvent event) {
+    public void onEmojiSend(final PlayerSendEmojiEvent event) {
         if (!event.getPlayer().hasPermission("chatemojis.emoji."+event.getEmoji().getId())) event.setCancelled(true);
     }
 

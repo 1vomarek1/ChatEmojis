@@ -2,20 +2,18 @@ package com.vomarek.commands;
 
 import com.vomarek.ChatEmojis;
 import com.vomarek.data.Configuration;
-import com.vomarek.emojis.EmojiManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
 public class ReloadCommand implements CommandExecutor {
     private final ChatEmojis plugin;
 
-    public ReloadCommand(@NotNull final ChatEmojis plugin) {
+    public ReloadCommand(final ChatEmojis plugin) {
         this.plugin = plugin;
     }
 

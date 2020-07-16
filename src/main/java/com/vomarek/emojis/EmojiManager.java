@@ -2,8 +2,6 @@ package com.vomarek.emojis;
 
 import com.vomarek.ChatEmojis;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
@@ -13,10 +11,10 @@ public class EmojiManager {
     private final HashMap<String, Emoji> emojis = new HashMap<>();
 
     /**
-     *
+     * Constructor of emoji manager (use only in onEnable)
      * @see ChatEmojis#getEmojiManager()
      */
-    public EmojiManager (@NotNull final ChatEmojis plugin) {
+    public EmojiManager (final ChatEmojis plugin) {
         this.plugin = plugin;
 
         final ConfigurationSection section = plugin.getConfig().getConfigurationSection("Emojis");
@@ -28,19 +26,44 @@ public class EmojiManager {
         }
 
     }
-
+    /**
+     * Returns hashmap with all emojis
+     * @return hashmap with all emojs
+     */
     public HashMap<String, Emoji> getEmojis() {
         return emojis;
     }
 
-    @Nullable
-    public Emoji createEmoji (@NotNull final String id, @NotNull final String identifier, @NotNull final String emoji) {
+    /**
+     * Creates emoji that will be saved to config
+     * @see EmojiManager#createEmoji(String, String, String, Boolean)
+     * @param id Id of new emoji (Id is used in permissions)
+     * @param identifier Identifier is text in chat that will be replaced with emoji
+     * @param emoji Emoji is text that will replace identifier
+     * @return Emoji that was created
+     */
+    public Emoji createEmoji (final String id, final String identifier, final String emoji) {
         return createEmoji(id, identifier, emoji, true);
     }
 
-    @Nullable
-    public Emoji createEmoji (@NotNull final String id, @NotNull final String identifier, @NotNull final String emoji, @NotNull final Boolean saveEmoji) {
+    /**
+     * Creates emoji that will be saved to config
+     * @see EmojiManager#createEmoji(String, String, String, Boolean)
+     * @param id Id of new emoji (Id is used in permissions)
+     * @param identifier Identifier is text in chat that will be replaced with emoji
+     * @param emoji Emoji is text that will replace identifier
+     * @param saveEmoji Should emoji be saved when it is edited
+     * @return Emoji that was created
+     */
+    public Emoji createEmoji (final String id, final String identifier, final String emoji, final Boolean saveEmoji) {
         if (emojis.containsKey(id)) return null;
+
+
+        if (plugin.getConfig().getString("Emojis."+id+".identifier", null) == null) return null;
+
+        plugin.getConfig().set("Emojis."+id+".identifier", identifier);
+        plugin.getConfig().set("Emojis."+id+".emoji", emoji);
+        plugin.getConfig().save();
 
         final Emoji emojiObj = new Emoji(id, identifier, emoji, saveEmoji);
 
@@ -49,8 +72,12 @@ public class EmojiManager {
         return emojiObj;
     }
 
-    @Nullable
-    public Emoji getEmojiById(@NotNull final String id) {
+    /**
+     * Returns emoji by parameter id
+     * @param id Id of emoji you want to get
+     * @return emoji that was found or null
+     */
+    public Emoji getEmojiById(final String id) {
         if (emojis.containsKey(id)) return emojis.get(id);
         return null;
     }
@@ -71,27 +98,43 @@ public class EmojiManager {
             this.saveEmoji = saveEmoji;
         }
 
-        @NotNull
+        /**
+         * Returns id of emoji
+         * @return id of emoji
+         */
         public String getId () {
             return id;
         }
 
-        @NotNull
+        /**
+         * Returns part of emoji that will be replaced
+         * @return part of emoji that will be replaced
+         */
         public String getIdentifier () {
             return identifier;
         }
 
-        @NotNull
+        /**
+         * Returns text that replaces emojis identifier
+         * @return text that replaces emojis identifier
+         */
         public String getEmoji () {
             return emoji;
         }
 
-        @NotNull
+        /**
+         * Returns if emoji is being saved
+         * @return wether emoji is being saved after it is edited
+         */
         public Boolean getSaveEmoji() {
             return saveEmoji;
         }
 
-        public void setIdentifier(@NotNull final String identifier) {
+        /**
+         * Changes identifier of emoji - part of emoji that is replaced with the emoji
+         * @param identifier part of emoji that is replaced with the emoji
+         */
+        public void setIdentifier(final String identifier) {
             this.identifier = identifier;
 
             if (saveEmoji) {
@@ -100,7 +143,11 @@ public class EmojiManager {
             }
         }
 
-        public void setEmoji(@NotNull final String emoji) {
+        /**
+         * Changes emoji - emojis content / what is shown when player types its identifier
+         * @param emoji emojis content / what is shown when player types its identifier
+         */
+        public void setEmoji(final String emoji) {
             this.emoji = emoji;
 
             if (saveEmoji) {

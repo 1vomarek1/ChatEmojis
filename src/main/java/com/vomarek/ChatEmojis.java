@@ -39,6 +39,10 @@ public class ChatEmojis extends JavaPlugin {
         getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&3&lChatEmojis &7|&f ChatEmojis have been&c disabled&f!"));
     }
 
+    /**
+     * Returns instance of ChatEmojis main class
+     * @return Main class of ChatEmojis plugin
+     */
     public static ChatEmojis getPlugin () {
         return plugin;
     }
@@ -52,6 +56,10 @@ public class ChatEmojis extends JavaPlugin {
         return config;
     }
 
+    /**
+     * Returns emoji manager - emoji manager is where you can create and manage emojis
+     * @return instance of EmojiManager
+     */
     public EmojiManager getEmojiManager () {
         return emojiManager;
     }
